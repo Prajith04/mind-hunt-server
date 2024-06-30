@@ -1,12 +1,22 @@
 const express = require('express');
 const cors = require('cors');
-
+const mongoose = require('mongoose')
+require('dotenv').config();
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
-
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+        //listen for requests
+        app.listen(process.env.PORT, ()=> {
+            console.log('listening on port', process.env.PORT)
+        })
+    })
+    .catch((error) => {
+        console.log(error)
+    })
 app.post('/submit-answers', (req, res) => {
   const answers = req.body;
 
